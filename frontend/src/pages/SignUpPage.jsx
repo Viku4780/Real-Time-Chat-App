@@ -4,7 +4,7 @@ import BorderAnimatedContainer from '../components/BorderAnimatedContainer';
 import { MessageCircleIcon, LockIcon, UserIcon, LoaderIcon, MailIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
-const SingUpPage = () => {
+const SignUpPage = () => {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -118,4 +118,4 @@ const SingUpPage = () => {
   )
 }
 
-export default SingUpPage
+export default SignUpPage
