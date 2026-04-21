@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
-import { useAuthStore } from '../store/useAuthStore';
+import React, { useEffect, useState } from 'react'
+// import { useAuthStore } from '../store/useAuthStore';
 import BorderAnimatedContainer from '../components/BorderAnimatedContainer';
 import { MessageCircleIcon, LockIcon, UserIcon, LoaderIcon, MailIcon } from 'lucide-react';
 import { Link } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { signUpUser } from '../store/slices/authSlice';
+import { useNavigate } from 'react-router';
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
@@ -10,12 +13,26 @@ const SignUpPage = () => {
     email: "",
     password: ""
   });
-  const { signup, isSigningUp } = useAuthStore();
+  // const { signup, isSigningUp } = useAuthStore();
+  const { user, loading } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    signup(formData);
+    // signup(formData);
+    dispatch(signUpUser(formData));
   };
+
+  useEffect(() => {
+    if(user){
+      navigate('/')
+    }
+  }, [navigate, user]);
+
+  if(user) return null;
+
 
   return (
     <div className='w-full flex -items-center justify-center p-4 bg-slate-900'>
@@ -77,8 +94,8 @@ const SignUpPage = () => {
                   </div>
 
                   {/* SUBMIT BUTTON */}
-                  <button className='auth-btn' type='submit' disabled={isSigningUp}>
-                    {isSigningUp ? (
+                  <button className='auth-btn' type='submit' disabled={loading}>
+                    {loading ? (
                       <LoaderIcon className='w-full h-5 animate-spin text-center' />
                     ) : (
                       "Create Account"

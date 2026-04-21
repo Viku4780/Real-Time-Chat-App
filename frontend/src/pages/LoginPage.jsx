@@ -1,20 +1,27 @@
 import React, { useState } from 'react'
-import { useAuthStore } from '../store/useAuthStore';
+// import { useAuthStore } from '../store/useAuthStore';
 import BorderAnimatedContainer from '../components/BorderAnimatedContainer';
 import { MessageCircleIcon, LockIcon, LoaderIcon, MailIcon } from 'lucide-react';
 import { Link } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../store/slices/authSlice';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: ""
   });
-  const { login, isLogginIn } = useAuthStore();
+  // const { login, isLogginIn } = useAuthStore();
+
+  const { user, loading } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    login(formData);
+    dispatch(loginUser(formData));
   };
+
+  if(user) return null;
 
   return (
     <div className='w-full flex -items-center justify-center p-4 bg-slate-900'>
@@ -63,8 +70,8 @@ const LoginPage = () => {
                   </div>
 
                   {/* SUBMIT BUTTON */}
-                  <button className='auth-btn' type='submit' disabled={isLogginIn}>
-                    {isLogginIn ? (
+                  <button className='auth-btn' type='submit' disabled={loading}>
+                    {loading ? (
                       <LoaderIcon className='w-full h-5 animate-spin text-center' />
                     ) : (
                       "Sign In"
