@@ -13,6 +13,13 @@ router.post('/logout', logout);
 
 router.put("/update-profile",protectRoute, updateProfile);
 
-router.get("/check", protectRoute, (req,res) => res.status(200).json(req.user));
+router.get("/check", protectRoute, (req,res) => {
+    try {
+        res.status(200).json(req.user)
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({message: "Internal server error"});
+    }
+});
 
 export default router;

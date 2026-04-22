@@ -87,7 +87,7 @@ export const sendMessage = async(req ,res) => {
 export const getChatPartners = async(req,res) => {
     try {
         const loggedInUserId = req.user._id;
-
+        
         // find all the messages where the logged-in user is either sender or receiver
         const messages = await Message.find({
             $or: [{senderId: loggedInUserId}, {receiverId: loggedInUserId}],
@@ -104,6 +104,8 @@ export const getChatPartners = async(req,res) => {
         ];
 
         const chatPartners = await User.find({_id: {$in: chatPartnerIds}}).select("-password");
+
+        console.log("getChatParteners running endelessaly");
 
         res.status(200).json(chatPartners);
     } catch (error) {
