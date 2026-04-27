@@ -2,11 +2,12 @@ import React, { useEffect } from 'react'
 import { useChatStore } from '../store/useChatStore'
 import UsersLoadingSkeleton from './UsersLoadingSkeleton';
 import NoChatsFound from './NoChatsFound';
-import { useAuthStore } from '../store/useAuthStore';
+// import { useAuthStore } from '../store/useAuthStore';
+import { useSelector } from 'react-redux';
 
 const ChatsList = () => {
   const { getMyChatPartners, chats, isUsersLoading, setSelectedUser } = useChatStore();
-  const { onlineUsers } = useAuthStore();
+  const { onlineUsers } = useSelector(state => state.auth);
 
   useEffect(() => {
     getMyChatPartners();

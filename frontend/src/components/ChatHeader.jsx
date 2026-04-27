@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
 import { useChatStore } from '../store/useChatStore'
 import { XIcon } from 'lucide-react';
-import { useAuthStore } from '../store/useAuthStore';
+// import { useAuthStore } from '../store/useAuthStore';
+import { useSelector } from 'react-redux';
 
 const ChatHeader = () => {
   const { selectedUser, setSelectedUser } = useChatStore();
-  const { onlineUsers } = useAuthStore();
+  const { onlineUsers } = useSelector(state =>  state.auth);
   const isOnline = onlineUsers.includes(selectedUser._id);
 
   useEffect(() => {

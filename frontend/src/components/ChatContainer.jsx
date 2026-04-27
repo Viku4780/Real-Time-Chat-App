@@ -5,6 +5,7 @@ import ChatHeader from "./ChatHeader";
 import NoChatHistoryPlaceholder from "./NoChatHistoryPlaceholder";
 import MessageInput from "./MessageInput";
 import MessagesLoadingSkeleton from "./MessagesLoadingSkeleton";
+import { useSelector } from "react-redux";
 
 function ChatContainer() {
   const {
@@ -15,7 +16,8 @@ function ChatContainer() {
     subscribeToMessages,
     unsubscribeFromMessages,
   } = useChatStore();
-  const { authUser } = useAuthStore();
+
+  const { user } = useSelector(state => state.auth);
   const messageEndRef = useRef(null);
 
   useEffect(() => {
@@ -41,11 +43,11 @@ function ChatContainer() {
             {messages.map((msg) => (
               <div
                 key={msg._id}
-                className={`chat ${msg.senderId === authUser._id ? "chat-end" : "chat-start"}`}
+                className={`chat ${msg.senderId === user._id ? "chat-end" : "chat-start"}`}
               >
                 <div
                   className={`chat-bubble relative ${
-                    msg.senderId === authUser._id
+                    msg.senderId === user._id
                       ? "bg-cyan-600 text-white"
                       : "bg-slate-800 text-slate-200"
                   }`}

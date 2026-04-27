@@ -10,6 +10,8 @@ const initialState = {
     user: null,
     loading: false,
     error: null,
+    socket: null,
+    onlineUsers: [],
 };
 
 export const checkUserAuth = createAsyncThunk("auth/checkUserAuth", async () => {
@@ -78,7 +80,23 @@ export const updateUserProfile = createAsyncThunk("auth/updateUserProfile", asyn
 const authSlice = createSlice({
     name: "Auth",
     initialState,
-    reducers: {},
+    reducers: {
+        connectSocket: (state) => {
+            if (!state.user || state.socket.connected) return;
+
+            const socket = new WebSocket('ws://localhost:3000');
+
+            // 2. Add Listeners
+            socket.onopen = () => console.log('Connected!');
+            // socket.onmessage = (event) => console.log('Data:', event.data);
+
+            state.socket = socket;
+        },
+
+        disconnectSocket: (state) => {
+            if(state.socket?.connected) state.socket.close();
+        }
+    },
     extraReducers: (builder) => {
         builder
             // keep fulfilled cases separate as they update different state parts
@@ -89,7 +107,7 @@ const authSlice = createSlice({
             .addCase(signUpUser.fulfilled, (state, action) => {
                 state.loading = false;
                 state.user = action.payload;
-                // toast.success("Account created successfully!");  separation of concerns (UI in logic )  reducers should be pure- they should  only calculate the next state,not  trigger real world actions
+                // toast.success("Account created successfully!");  separation of concerns (UI in logic )  reducers should be pure - they should  only calculate the next state, not  trigger real world actions
             })
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.loading = false;
@@ -119,7 +137,7 @@ const authSlice = createSlice({
                     state.error = action.payload || action.error.message;
                 }
             )
-            
+
     }
 });
 

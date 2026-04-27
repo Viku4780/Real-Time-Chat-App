@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { useChatStore } from "../store/useChatStore";
 import UsersLoadingSkeleton from "./UsersLoadingSkeleton";
-import { useAuthStore } from "../store/useAuthStore";
+// import { useAuthStore } from "../store/useAuthStore";
+import { useSelector } from "react-redux";
 
 function ContactList() {
   const { getAllContacts, allContacts, setSelectedUser, isUsersLoading } = useChatStore();
-  const { onlineUsers } = useAuthStore();
+  const { onlineUsers } = useSelector(state => state.auth);
 
   useEffect(() => {
     getAllContacts();
