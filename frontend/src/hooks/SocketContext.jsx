@@ -24,14 +24,13 @@ export const SocketProvider = ({ children }) => {
 
         socket.onmessage = (e) => {
           const data = JSON.parse(e.data);
-          // console.log(data);
+       
           if(data.type === "getOnlineUsers"){
             dispatch(updateOnlineUser(data.payload));
-            // console.log("online user is updating");
           }
 
           if(data.type === "newMessage"){
-            // console.log(data);
+            
             dispatch(subscribeToMessages(data.payload));
           }
         }

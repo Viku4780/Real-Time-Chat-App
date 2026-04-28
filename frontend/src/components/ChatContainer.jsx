@@ -4,12 +4,10 @@ import NoChatHistoryPlaceholder from "./NoChatHistoryPlaceholder";
 import MessageInput from "./MessageInput";
 import MessagesLoadingSkeleton from "./MessagesLoadingSkeleton";
 import { useDispatch, useSelector } from "react-redux";
-import { unsubscribeFromMessages ,getMessagesByUserId} from "../store/slices/chatSlice";
-import { useSocket } from "../hooks/SocketContext";
+import { getMessagesByUserId} from "../store/slices/chatSlice";
+// import { useSocket } from "../hooks/SocketContext";
 
 function ChatContainer() {
-
-  const socket = useSocket();
 
   const {selectedUser, isMessagesLoading, messages} = useSelector(state => state.chat);
   const dispatch = useDispatch();
@@ -20,8 +18,7 @@ function ChatContainer() {
   useEffect(() => {
     dispatch(getMessagesByUserId(selectedUser._id));
 
-    // clean up
-    return () => dispatch(unsubscribeFromMessages({socket}));
+    
   }, [selectedUser, getMessagesByUserId]);
 
   useEffect(() => {

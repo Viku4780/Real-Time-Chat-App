@@ -105,10 +105,6 @@ const chatSlice = createSlice({
             }
     },
 
-    unsubscribeFromMessages: (state, action) => {
-        const socket = action.payload.socket;
-        // socket.off("newMessage");
-    },
 },
     extraReducers: (builder) => {
         builder
@@ -155,5 +151,5 @@ const chatSlice = createSlice({
     }
 });
 
-export const { toggleSound, setActiveTab, setSelectedUser, subscribeToMessages, unsubscribeFromMessages } = chatSlice.actions;
+export const { toggleSound, setActiveTab, setSelectedUser, subscribeToMessages } = chatSlice.actions;
 export default chatSlice.reducer;
