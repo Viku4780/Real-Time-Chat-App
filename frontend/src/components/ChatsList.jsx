@@ -1,16 +1,21 @@
 import React, { useEffect } from 'react'
-import { useChatStore } from '../store/useChatStore'
+// import { useChatStore } from '../store/useChatStore'
 import UsersLoadingSkeleton from './UsersLoadingSkeleton';
 import NoChatsFound from './NoChatsFound';
 // import { useAuthStore } from '../store/useAuthStore';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMyChatPartners, setSelectedUser } from '../store/slices/chatSlice';
 
 const ChatsList = () => {
-  const { getMyChatPartners, chats, isUsersLoading, setSelectedUser } = useChatStore();
+  // const { getMyChatPartners, chats, isUsersLoading, setSelectedUser } = useChatStore();
+  const {chats, isUsersLoading} = useSelector(state => state.chat);
   const { onlineUsers } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+
+  // console.log("chats: ",chats);
 
   useEffect(() => {
-    getMyChatPartners();
+   dispatch(getMyChatPartners());
   }, [getMyChatPartners]);
 
   if (isUsersLoading) return <UsersLoadingSkeleton />;
@@ -19,7 +24,7 @@ const ChatsList = () => {
   return (
     <>
       {chats.map(chat => (
-        <div key={chat._id} className='bg-cyan-500/10 p-4 rounded-lg cursor-pointer hover:bg-cyan-500/20 transition-colors' onClick={() => setSelectedUser(chat)}>
+        <div key={chat._id} className='bg-cyan-500/10 p-4 rounded-lg cursor-pointer hover:bg-cyan-500/20 transition-colors' onClick={() => dispatch(setSelectedUser(chat))}>
           {/* TODO: FIX THIS ONLINE STATUS AND MAKE IT WORK WITH SOCKET */}
           <div className='flex items-center gap-3'>
             <div className={`avatar ${onlineUsers.includes(chat._id) ? "online" : 'offline'}`}>

@@ -10,7 +10,6 @@ const initialState = {
     user: null,
     loading: false,
     error: null,
-    socket: null,
     onlineUsers: [],
 };
 
@@ -24,7 +23,7 @@ export const checkUserAuth = createAsyncThunk("auth/checkUserAuth", async () => 
     }
 });
 
-export const signUpUser = createAsyncThunk("auth/signUpUser", async (data, { rejectWithValue }) => {
+export const signUpUser = createAsyncThunk("auth/signUpUser", async (data, thunkAPI) => {
     try {
         const res = await axiosInstance.post("/auth/signup", data);
         toast.success("Account created successfully!");
@@ -33,11 +32,12 @@ export const signUpUser = createAsyncThunk("auth/signUpUser", async (data, { rej
     } catch (error) {
         const message = error.response?.data?.message || "Signup failed";
         toast.error(message);
+        const {rejectWithValue} = thunkAPI;
         return rejectWithValue(message); // Now .rejected will actually trigger
     }
 });
 
-export const loginUser = createAsyncThunk("auth/loginUser", async (data, { rejectWithValue }) => {
+export const loginUser = createAsyncThunk("auth/loginUser", async (data, thunkAPI) => {
     try {
         const res = await axiosInstance.post("/auth/login", data);
         toast.success("Logged in successfully!");
@@ -46,11 +46,12 @@ export const loginUser = createAsyncThunk("auth/loginUser", async (data, { rejec
     } catch (error) {
         const message = error.response?.data?.message || "Login failed";
         toast.error(message);
+        const {rejectWithValue} = thunkAPI;
         return rejectWithValue(message);
     }
 });
 
-export const logoutUser = createAsyncThunk("auth/logoutUser", async (__, { rejectWithValue }) => {
+export const logoutUser = createAsyncThunk("auth/logoutUser", async (__, thunkAPI) => {
     try {
         const res = await axiosInstance.post("/auth/logout");
         toast.success("Logged out successfully");
@@ -59,6 +60,7 @@ export const logoutUser = createAsyncThunk("auth/logoutUser", async (__, { rejec
     } catch (error) {
         const message = error.response?.data?.message || "Logout failed";
         toast.error(message);
+        const {rejectWithValue} = thunkAPI;
         return rejectWithValue(message);
     }
 });
@@ -78,24 +80,12 @@ export const updateUserProfile = createAsyncThunk("auth/updateUserProfile", asyn
 
 
 const authSlice = createSlice({
-    name: "Auth",
+    name: "auth",
     initialState,
     reducers: {
-        connectSocket: (state) => {
-            if (!state.user || state.socket.connected) return;
-
-            const socket = new WebSocket('ws://localhost:3000');
-
-            // 2. Add Listeners
-            socket.onopen = () => console.log('Connected!');
-            // socket.onmessage = (event) => console.log('Data:', event.data);
-
-            state.socket = socket;
+        updateOnlineUser: (state,action) => {
+            state.onlineUsers = action.payload;
         },
-
-        disconnectSocket: (state) => {
-            if(state.socket?.connected) state.socket.close();
-        }
     },
     extraReducers: (builder) => {
         builder
@@ -141,4 +131,5 @@ const authSlice = createSlice({
     }
 });
 
+export const {updateOnlineUser} = authSlice.actions;
 export default authSlice.reducer;

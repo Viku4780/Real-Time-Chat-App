@@ -1,26 +1,26 @@
-import React, { useEffect } from 'react'
+import React, { createContext, useEffect, useRef } from 'react'
 import { Navigate, Route, Routes } from 'react-router'
 import ChatPage from './pages/ChatPage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
-// import { useAuthStore } from './store/useAuthStore'
 import PageLoader from './components/PageLoader'
-import {Toaster} from 'react-hot-toast'
+import { Toaster } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { checkUserAuth } from './store/slices/authSlice'
+import { useSocket } from './hooks/SocketContext'
+
+// const socketContext = createContext(null);
 
 const App = () => {
-  // const {checkAuth, ischeckingAuth, authUser} = useAuthStore();
-  const {user, loading} = useSelector(state => state.auth);
+  const { user, loading } = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(checkUserAuth());
-  },[dispatch]);
+  }, [dispatch]);
 
-  // console.log({authUser});
 
-  if(loading) return <PageLoader />
+  if (loading) return <PageLoader />
 
   return (
     <div className='min-h-screen bg-slate-900 relative flex items-center justify-center p-4 overflow-hidden'>
@@ -34,7 +34,7 @@ const App = () => {
         <Route path='/login' element={!user ? <LoginPage /> : <Navigate to={"/"} />} />
         <Route path='/signup' element={!user ? <SignUpPage /> : <Navigate to={"/"} />} />
       </Routes>
-      
+
       <Toaster />
     </div>
   )

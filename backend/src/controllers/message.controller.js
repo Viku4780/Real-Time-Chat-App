@@ -1,5 +1,6 @@
 import cloudinary from "../lib/cloudinary.js";
-import { getReceiverSocketId, io } from "../lib/socket.js";
+// import { getReceiverSocketId, io } from "../lib/socket.js";
+import { getReceiverSocket, wss } from "../lib/websocket.js";
 import Message from "../models/Message.js";
 import User from "../models/User.js";
 
@@ -8,6 +9,7 @@ export const getAllContacts = async(req , res) => {
     try {
         const loggedInUserId = req.user._id;
         const filteredUsers = await User.find({_id: {$ne: loggedInUserId}}).select("-password");
+        console.log(filteredUsers);
 
         res.status(200).json(filteredUsers);
     } catch (error) {
@@ -43,6 +45,8 @@ export const sendMessage = async(req ,res) => {
         const {id: receiverId} = req.params;
         const senderId = req.user._id;
 
+        // console.log(receiverId);
+
         if(!text && !image){
             return res.status(400).json({message: 'Text or image is required'});
         }
@@ -71,9 +75,14 @@ export const sendMessage = async(req ,res) => {
         await newMessage.save();
 
         // todo: send message in real-time if user is online - socket.io
-        const receiverSocketId = getReceiverSocketId(receiverId);
-        if(receiverSocketId){
-            io.to(receiverSocketId).emit("newMessage", newMessage);
+        const receiverSocket = getReceiverSocket(receiverId);
+        // console.log("receiversocket: ",receiverSocket);
+        if(receiverSocket){
+            // console.log(receiverSocket)
+            receiverSocket.send(JSON.stringify({
+                type: 'newMessage',
+                payload: newMessage
+            }));
         }
 
         res.status(201).json(newMessage);
@@ -87,6 +96,8 @@ export const sendMessage = async(req ,res) => {
 export const getChatPartners = async(req,res) => {
     try {
         const loggedInUserId = req.user._id;
+
+        console.log("loggedInUserId: ", loggedInUserId);
         
         // find all the messages where the logged-in user is either sender or receiver
         const messages = await Message.find({
@@ -104,8 +115,6 @@ export const getChatPartners = async(req,res) => {
         ];
 
         const chatPartners = await User.find({_id: {$in: chatPartnerIds}}).select("-password");
-
-        // console.log("getChatParteners running endelessaly");
 
         res.status(200).json(chatPartners);
     } catch (error) {

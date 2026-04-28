@@ -1,17 +1,20 @@
 import React, { useEffect } from 'react'
-import { useChatStore } from '../store/useChatStore'
 import { XIcon } from 'lucide-react';
-// import { useAuthStore } from '../store/useAuthStore';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSelectedUser } from '../store/slices/chatSlice';
 
 const ChatHeader = () => {
-  const { selectedUser, setSelectedUser } = useChatStore();
-  const { onlineUsers } = useSelector(state =>  state.auth);
+
+  const {selectedUser} = useSelector(state => state.chat);
+  const dispatch = useDispatch();
+  const onlineUsers = useSelector(state =>  state.auth.onlineUsers);
   const isOnline = onlineUsers.includes(selectedUser._id);
+
+  // console.log("Running onlineUsers in chat Headers: ", onlineUsers);
 
   useEffect(() => {
     const handleEscKey = (e) => {
-      if (e.key === "Escape") setSelectedUser(null);
+      if (e.key === "Escape") dispatch(setSelectedUser(null));
     }
 
     window.addEventListener("keydown", handleEscKey);
@@ -24,10 +27,9 @@ const ChatHeader = () => {
     <div className='flex justify-between items-center bg-slate-800/50 border-b border-slate-700/50 max-h-[84px] px-6 flex-1'>
       <div className='flex  items-center space-x-3'>
 
-        <div className={`avatar ${isOnline ? "online" : "offline"} h-[60px]`}>
-          <img src={selectedUser.profilePic || "/avatar.png"} alt={selectedUser.fullName} className='w-[20px]' />
-          {/* <div> */}
-          {/* </div> */}
+        <div className={` ${isOnline ? "online" : "offline"} h-[60px]`}>
+          <img src={selectedUser.profilePic || "/avatar.png"} alt={selectedUser.fullName} className='w-[60px] h-[60px] rounded-full' />
+          
         </div>
 
         <div>
@@ -37,7 +39,7 @@ const ChatHeader = () => {
 
       </div>
 
-      <button onClick={() => setSelectedUser(null)}>
+      <button onClick={() => dispatch(setSelectedUser(null))}>
         <XIcon className='w-5 h-5 text-slate-400 hover:text-slate-200 transition-colors cursor-pointer' />
       </button>
     </div>

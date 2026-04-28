@@ -1,15 +1,15 @@
 import { useEffect } from "react";
-import { useChatStore } from "../store/useChatStore";
 import UsersLoadingSkeleton from "./UsersLoadingSkeleton";
-// import { useAuthStore } from "../store/useAuthStore";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllContacts, setSelectedUser } from "../store/slices/chatSlice";
 
 function ContactList() {
-  const { getAllContacts, allContacts, setSelectedUser, isUsersLoading } = useChatStore();
+  const {allContacts, isUsersLoading} = useSelector(state => state.chat);
+  const dispatch = useDispatch();
   const { onlineUsers } = useSelector(state => state.auth);
 
   useEffect(() => {
-    getAllContacts();
+    dispatch(getAllContacts());
   }, [getAllContacts]);
 
   if (isUsersLoading) return <UsersLoadingSkeleton />;
@@ -20,7 +20,7 @@ function ContactList() {
         <div
           key={contact._id}
           className="bg-cyan-500/10 p-4 rounded-lg cursor-pointer hover:bg-cyan-500/20 transition-colors"
-          onClick={() => setSelectedUser(contact)}
+          onClick={() => dispatch(setSelectedUser(contact))}
         >
           <div className="flex items-center gap-3">
             <div className={`avatar ${onlineUsers?.includes(contact._id) ? "online" : "offline"}`}>

@@ -1,15 +1,17 @@
-import React from 'react'
 import BorderAnimatedContainer from '../components/BorderAnimatedContainer';
-import { useChatStore } from '../store/useChatStore';
 import ProfileHeader from '../components/ProfileHeader';
 import ActiveTabSwitch from '../components/ActiveTabSwitch';
 import ChatsList from '../components/ChatsList';
 import ContactList from '../components/ContactList';
 import ChatContainer from '../components/ChatContainer';
 import NoConversationPlaceholder from '../components/NoConversationPlaceholder';
+import { useSelector } from 'react-redux';
+
 
 const ChatPage = () => {
-  const {activeTab, selectedUser} = useChatStore();
+ const {activeTab, selectedUser} = useSelector(state => state.chat);
+
+//  console.log("selectedUser: ", selectedUser);
 
   return (
     <div className='relative w-full max-w-6xl h-[800px]'>

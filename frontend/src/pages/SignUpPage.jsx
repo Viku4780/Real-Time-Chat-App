@@ -4,7 +4,7 @@ import BorderAnimatedContainer from '../components/BorderAnimatedContainer';
 import { MessageCircleIcon, LockIcon, UserIcon, LoaderIcon, MailIcon } from 'lucide-react';
 import { Link } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { signUpUser } from '../store/slices/authSlice';
+import {signUpUser } from '../store/slices/authSlice';
 import { useNavigate } from 'react-router';
 
 const SignUpPage = () => {
@@ -13,7 +13,7 @@ const SignUpPage = () => {
     email: "",
     password: ""
   });
-  // const { signup, isSigningUp } = useAuthStore();
+
   const { user, loading } = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
@@ -21,17 +21,16 @@ const SignUpPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // signup(formData);
     dispatch(signUpUser(formData));
   };
 
   useEffect(() => {
-    if(user){
+    if (user) {
       navigate('/')
     }
   }, [navigate, user]);
 
-  if(user) return null;
+  if (user) return null;
 
 
   return (
