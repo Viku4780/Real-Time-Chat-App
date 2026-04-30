@@ -16,9 +16,7 @@ function ChatContainer() {
   const messageEndRef = useRef(null);
 
   useEffect(() => {
-    dispatch(getMessagesByUserId(selectedUser._id));
-
-    
+    dispatch(getMessagesByUserId(selectedUser._id));    
   }, [selectedUser, getMessagesByUserId]);
 
   useEffect(() => {
