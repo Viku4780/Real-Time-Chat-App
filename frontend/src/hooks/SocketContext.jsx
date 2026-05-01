@@ -15,7 +15,7 @@ export const SocketProvider = ({ children }) => {
       // only connect if user exists and there's no active connection
       // readystate 0 = connecting, 1 = open
       if (user && (!socketRef.current || socketRef.current?.readyState >= 2)) {
-        const socket = new WebSocket('ws://localhost:3000');
+        const socket = new WebSocket('wss://real-time-chat-app-83dt.onrender.com');
   
         socket.onopen = () => {
           console.log("Connected");
