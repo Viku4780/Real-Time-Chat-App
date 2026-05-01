@@ -5,6 +5,12 @@ import { subscribeToMessages } from '../store/slices/chatSlice';
 
 const SocketContext = createContext(null);
 
+const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+const host = window.location.host; // Includes domain and port (e.g., localhost:3000)
+const socketUrl = `${protocol}${host}/ws`; // Adjust path (/ws) to match your backend
+
+
+
 export const SocketProvider = ({ children }) => {
   const socketRef = useRef(null);
   const dispatch = useDispatch();
@@ -15,7 +21,7 @@ export const SocketProvider = ({ children }) => {
       // only connect if user exists and there's no active connection
       // readystate 0 = connecting, 1 = open
       if (user && (!socketRef.current || socketRef.current?.readyState >= 2)) {
-        const socket = new WebSocket('wss://real-time-chat-app-83dt.onrender.com');
+        const socket = new WebSocket(socketUrl);
   
         socket.onopen = () => {
           console.log("Connected");
