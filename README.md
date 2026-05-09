@@ -203,11 +203,11 @@ npm start
 
 
 ## 🔐 Future Improvements
-✅ Group chat feature
-✅ File sharing
-✅ Message encryption
-✅ Push notifications
-✅ Video/voice calling
+* ✅ Group chat feature
+* ✅ File sharing
+* ✅ Message encryption
+* ✅ Push notifications
+* ✅ Video/voice calling
 
 
 ## 🤝 Contributing
