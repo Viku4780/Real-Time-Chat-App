@@ -1,9 +1,8 @@
 import { useRef, useState } from "react";
-import useKeyboardSound from "../hooks/useKeyboardSound";
-// import { useChatStore } from "../store/useChatStore";
+import useKeyboardSound from '../hook/useKeyboardSound'
 import toast from "react-hot-toast";
 import { ImageIcon, SendIcon, XIcon } from "lucide-react";
-import { sendMessage } from "../store/slices/chatSlice";
+import { sendMessage } from "../../chat/chatSlice"; 
 import { useDispatch, useSelector } from "react-redux";
 
 function MessageInput() {

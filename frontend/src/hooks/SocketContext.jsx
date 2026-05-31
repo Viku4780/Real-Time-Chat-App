@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateOnlineUser } from '../store/slices/authSlice';
-import { subscribeToMessages } from '../store/slices/chatSlice';
+import { updateOnlineUser } from '../features/auth/authSlice';
+import { subscribeToMessages } from '../features/chat/chatSlice';
 
 const SocketContext = createContext(null);
 

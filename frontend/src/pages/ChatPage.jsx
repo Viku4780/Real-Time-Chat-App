@@ -1,10 +1,10 @@
-import BorderAnimatedContainer from '../components/BorderAnimatedContainer';
-import ProfileHeader from '../components/ProfileHeader';
-import ActiveTabSwitch from '../components/ActiveTabSwitch';
-import ChatsList from '../components/ChatsList';
-import ContactList from '../components/ContactList';
-import ChatContainer from '../components/ChatContainer';
-import NoConversationPlaceholder from '../components/NoConversationPlaceholder';
+import BorderAnimatedContainer from '../shared/components/BorderAnimatedContainer';
+import ProfileHeader from '../features/users/components/ProfileHeader';
+import ActiveTabSwitch from '../features/chat/components/ActiveTabSwitch';
+import ChatsList from '../features/chat/components/ChatsList';
+import ContactList from '../features/chat/components/ContactList';
+import ChatContainer from '../features/chat/components/ChatContainer';
+import NoConversationPlaceholder from '../features/chat/components/NoConversationPlaceholder';
 import { useSelector } from 'react-redux';
 
 

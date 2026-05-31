@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react";
 import ChatHeader from "./ChatHeader";
 import NoChatHistoryPlaceholder from "./NoChatHistoryPlaceholder";
-import MessageInput from "./MessageInput";
-import MessagesLoadingSkeleton from "./MessagesLoadingSkeleton";
+import MessageInput from "../../message/components/MessageInput";
+import MessagesLoadingSkeleton from "../../message/components/MessagesLoadingSkeleton";
 import { useDispatch, useSelector } from "react-redux";
-import { getMessagesByUserId} from "../store/slices/chatSlice";
-// import { useSocket } from "../hooks/SocketContext";
+import { getMessagesByUserId } from "../chatSlice";
+
 
 function ChatContainer() {
 

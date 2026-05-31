@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 // import { useChatStore } from '../store/useChatStore'
-import UsersLoadingSkeleton from './UsersLoadingSkeleton';
+import UsersLoadingSkeleton from '../../users/components/UsersLoadingSkeleton';
 import NoChatsFound from './NoChatsFound';
 // import { useAuthStore } from '../store/useAuthStore';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMyChatPartners, setSelectedUser } from '../store/slices/chatSlice';
+import { getMyChatPartners,setSelectedUser } from '../chatSlice'; 
 
 const ChatsList = () => {
   // const { getMyChatPartners, chats, isUsersLoading, setSelectedUser } = useChatStore();

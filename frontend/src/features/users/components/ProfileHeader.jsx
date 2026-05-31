@@ -1,12 +1,10 @@
 import React from 'react'
 import { useState, useRef } from 'react';
 import { LogOutIcon, VolumeOffIcon, Volume2Icon } from 'lucide-react';
-// import { useAuthStore } from '../store/useAuthStore';
-// import { useChatStore } from '../store/useChatStore';
-import { logoutUser, updateUserProfile } from '../store/slices/authSlice';
+import { logoutUser, updateUserProfile } from '../../auth/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleSound } from '../store/slices/chatSlice';
-import { useSocket } from '../hooks/SocketContext';
+import { toggleSound } from '../../chat/chatSlice'; 
+import { useSocket } from '../../../hooks/SocketContext'; 
 
 const mouseClickSound = new Audio("/sound/mouse-click.mp3");
 

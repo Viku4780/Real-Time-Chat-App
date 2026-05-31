@@ -1,15 +1,13 @@
-import React, { createContext, useEffect, useRef } from 'react'
+import React, {  useEffect } from 'react'
 import { Navigate, Route, Routes } from 'react-router'
 import ChatPage from './pages/ChatPage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
-import PageLoader from './components/PageLoader'
+import PageLoader from '../src/shared/components/PageLoader'
 import { Toaster } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
-import { checkUserAuth } from './store/slices/authSlice'
-import { useSocket } from './hooks/SocketContext'
+import { checkUserAuth } from './features/auth/authSlice'
 
-// const socketContext = createContext(null);
 
 const App = () => {
   const { user, loading } = useSelector(state => state.auth);

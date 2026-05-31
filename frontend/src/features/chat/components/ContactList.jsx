@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import UsersLoadingSkeleton from "./UsersLoadingSkeleton";
+import UsersLoadingSkeleton from "../../users/components/UsersLoadingSkeleton";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllContacts, setSelectedUser } from "../store/slices/chatSlice";
+import { getAllContacts,setSelectedUser } from "../chatSlice";
 
 function ContactList() {
   const {allContacts, isUsersLoading} = useSelector(state => state.chat);

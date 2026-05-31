@@ -1,6 +1,6 @@
 import React from 'react'
 // import { useChatStore } from '../store/useChatStore'
-import { setActiveTab } from '../store/slices/chatSlice';
+import { setActiveTab } from '../chatSlice';
 import {useDispatch, useSelector} from 'react-redux';
 
 const ActiveTabSwitch = () => {

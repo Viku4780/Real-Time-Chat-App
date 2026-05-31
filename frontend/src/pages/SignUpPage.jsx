@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 // import { useAuthStore } from '../store/useAuthStore';
-import BorderAnimatedContainer from '../components/BorderAnimatedContainer';
+import BorderAnimatedContainer from '../shared/components/BorderAnimatedContainer';
 import { MessageCircleIcon, LockIcon, UserIcon, LoaderIcon, MailIcon } from 'lucide-react';
 import { Link } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import {signUpUser } from '../store/slices/authSlice';
+import {signUpUser } from '../features/auth/authSlice';
 import { useNavigate } from 'react-router';
 
 const SignUpPage = () => {

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { XIcon } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSelectedUser } from '../store/slices/chatSlice';
+import { setSelectedUser } from '../chatSlice'; 
 
 const ChatHeader = () => {
 

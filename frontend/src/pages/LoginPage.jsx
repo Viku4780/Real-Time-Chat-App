@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 // import { useAuthStore } from '../store/useAuthStore';
-import BorderAnimatedContainer from '../components/BorderAnimatedContainer';
+import BorderAnimatedContainer from '../shared/components/BorderAnimatedContainer';
 import { MessageCircleIcon, LockIcon, LoaderIcon, MailIcon } from 'lucide-react';
 import { Link } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../store/slices/authSlice';
+import { loginUser } from '../features/auth/authSlice';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({

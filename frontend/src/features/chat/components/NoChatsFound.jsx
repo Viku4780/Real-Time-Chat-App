@@ -1,6 +1,5 @@
 import { MessageCircleIcon } from "lucide-react";
-// import { useChatStore } from "../store/useChatStore";
-import { setActiveTab } from "../store/slices/chatSlice";
+import { setActiveTab } from "../chatSlice"; 
 import { useDispatch } from "react-redux";
 
 function NoChatsFound() {
