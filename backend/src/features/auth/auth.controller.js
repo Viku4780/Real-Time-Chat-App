@@ -1,7 +1,7 @@
-import { sendWelcomeEmail } from "../emails/emailHandlers.js";
-import cloudinary from "../lib/cloudinary.js";
-import { generateToken } from "../lib/utils.js";
-import User from "../models/User.js";
+import { sendWelcomeEmail } from "../../infrastructure/email/emailHandlers.js";
+import cloudinary from "../../infrastructure/storage/cloudinary.js";
+import { generateToken } from "../../lib/utils.js";
+import User from "../auth/auth.model.js";
 import bcrypt from 'bcryptjs';
 
 export const signup = async(req, res) => {

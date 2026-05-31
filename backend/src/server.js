@@ -1,13 +1,13 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import authRoutes from './routes/auth.route.js';
+import authRoutes from './features/auth/auth.routes.js';
 import path from 'path';
-import { connectDB } from './lib/db.js';
+import { connectDB } from './config/db.js';
 import cookieParser from 'cookie-parser';
-import messageRoutes from './routes/message.route.js'
-import { ENV } from './lib/env.js';
+import messageRoutes from './features/message/message.routes.js'
+import { ENV } from './config/env.js';
 import cors from 'cors';
-import { app, server } from './lib/websocket.js';
+import { app, server } from './features/chat/websocket.js';
 
 dotenv.config();
 

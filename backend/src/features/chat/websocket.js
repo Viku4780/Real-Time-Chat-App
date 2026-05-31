@@ -1,11 +1,9 @@
-// import {Server} from 'socket.io';
 import http from 'http';
 import express from 'express';
-import { ENV } from './env.js';
+import { ENV } from '../../config/env.js';
 import jwt from 'jsonwebtoken';
 import { WebSocketServer } from 'ws';
-import { type } from 'os';
-import User from '../models/User.js'
+import User from '../auth/auth.model.js'
 
 
 const app = express();

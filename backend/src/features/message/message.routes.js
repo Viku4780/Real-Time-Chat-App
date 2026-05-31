@@ -1,7 +1,7 @@
 import express from 'express';
-import { getAllContacts, getChatPartners, getMessagesByUserId, sendMessage } from '../controllers/message.controller.js';
-import { protectRoute } from '../middleware/auth.middleware.js';
-import { arcjetProtection } from '../middleware/arcjet.middleware.js';
+import { getAllContacts, getChatPartners, getMessagesByUserId, sendMessage } from '../message/message.controller.js';
+import { protectRoute } from '../auth/auth.middleware.js';
+import { arcjetProtection } from '../../infrastructure/security/arcjet.middleware.js';
 
 const router = express.Router();
 
