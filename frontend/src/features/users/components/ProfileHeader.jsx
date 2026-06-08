@@ -1,43 +1,8 @@
-import React from 'react'
-import { useState, useRef } from 'react';
 import { LogOutIcon, VolumeOffIcon, Volume2Icon } from 'lucide-react';
-import { logoutUser, updateUserProfile } from '../../auth/authSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { toggleSound } from '../../chat/chatSlice'; 
-import { useSocket } from '../../../hooks/SocketContext'; 
-
-const mouseClickSound = new Audio("/sound/mouse-click.mp3");
+import useProfileHeader from '../hooks/useProfileHeader';
 
 const ProfileHeader = () => {
-  const {isSoundEnabled} = useSelector(state => state.chat);
-  const [selectedImg, setSelectedImg] = useState(null);
-  const dispatch = useDispatch();
-  const { user } = useSelector(state => state.auth);
-  const socket = useSocket();
-
-  const fileInputRef = useRef();
-
-  // console.log("isSoundEnabled: ", isSoundEnabled);
-
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-
-    reader.onloadend = async () => {
-      const base64Image = reader.result;
-      setSelectedImg(base64Image);
-      dispatch(updateUserProfile({ profilePic: base64Image }));
-    }
-  };
-
-  const handleLogout = () => {
-    dispatch(logoutUser());
-    console.log(socket);
-    socket.close();
-  }
+ const {fileInputRef, selectedImg, user, isSoundEnabled, handleImageUpload, handleLogout,handleToggleSound} = useProfileHeader()
 
   return (
     <div className='p-6 border-b border-slate-700/50'>
@@ -78,18 +43,13 @@ const ProfileHeader = () => {
         {/* BUTTONS */}
         <div className='flex gap-4 items-center'>
           {/* LOGOUT BTN */}
-          <button className='text-slate-400 hover:text-slate-200 transition-colors' onClick={() => handleLogout()}>
+          <button className='text-slate-400 hover:text-slate-200 transition-colors' onClick={handleLogout}>
             <LogOutIcon className='size-5' />
           </button>
 
           {/* SOUND TOGGLE*/}
           <button className='text-slate-400 hover:text-slate-200 transition-colors'
-            onClick={() => {
-              // play click sound before toggling
-              mouseClickSound.currentTime = 0; // reset to start
-              mouseClickSound.play().catch((error) => console.log("Audio play failed:", error));
-              dispatch(toggleSound());
-            }}
+            onClick={handleToggleSound }
           >
             {isSoundEnabled ? (
               <Volume2Icon className='size-5' />
