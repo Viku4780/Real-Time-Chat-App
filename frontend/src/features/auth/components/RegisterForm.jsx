@@ -1,40 +1,11 @@
-import React, { useEffect, useState } from 'react'
-// import { useAuthStore } from '../store/useAuthStore';
-import BorderAnimatedContainer from '../../../shared/components/BorderAnimatedContainer';
-import { MessageCircleIcon, LockIcon, UserIcon, LoaderIcon, MailIcon } from 'lucide-react';
-import { Link } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import {signUpUser } from '../features/auth/authSlice';
-import { useNavigate } from 'react-router';
+import { LoaderIcon, LockIcon, MailIcon, MessageCircleIcon, UserIcon } from 'lucide-react'
+import React from 'react'
+import { Link } from 'react-router'
+import BorderAnimatedContainer from '../../../shared/components/BorderAnimatedContainer'
 
-const SignUpPage = () => {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    password: ""
-  });
-
-  const { user, loading } = useSelector(state => state.auth);
-  const dispatch = useDispatch();
-
-  const navigate = useNavigate();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(signUpUser(formData));
-  };
-
-  useEffect(() => {
-    if (user) {
-      navigate('/')
-    }
-  }, [navigate, user]);
-
-  if (user) return null;
-
-
+const RegisterForm = ({formData, onSubmit, onChange, loading}) => {
   return (
-    <div className='w-full flex -items-center justify-center p-4 bg-slate-900'>
+     <div className='w-full flex -items-center justify-center p-4 bg-slate-900'>
       <div className='relative w-full max-w-6xl md:h-[800px] h-[650px]'>
         <BorderAnimatedContainer>
           <div className='w-full flex flex-col md:flex-row'>
@@ -49,7 +20,7 @@ const SignUpPage = () => {
                 </div>
 
                 {/* FORM  */}
-                <form onSubmit={handleSubmit} className='space-y-6'>
+                <form onSubmit={onSubmit} className='space-y-6'>
                   {/* FULL NAME */}
                   <div>
                     <label className='auth-input-label'>Full Name</label>
@@ -57,7 +28,7 @@ const SignUpPage = () => {
                       <UserIcon className='auth-input-icon' />
 
                       <input type="text" value={formData.fullName}
-                        onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                        onChange={(e) => onChange('fullName', e.target.value )}
                         className='input'
                         placeholder='John Doe'
                       />
@@ -71,7 +42,7 @@ const SignUpPage = () => {
                       <MailIcon className='auth-input-icon' />
 
                       <input type="email" value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        onChange={(e) => onChange('email', e.target.value )}
                         className='input'
                         placeholder='johndoe@gmail.com'
                       />
@@ -85,7 +56,7 @@ const SignUpPage = () => {
                       <LockIcon className='auth-input-icon' />
 
                       <input type="password" value={formData.password}
-                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                        onChange={(e) => onChange('password', e.target.value )}
                         className='input'
                         placeholder='Enter your password'
                       />
@@ -134,4 +105,4 @@ const SignUpPage = () => {
   )
 }
 
-export default SignUpPage
+export default RegisterForm

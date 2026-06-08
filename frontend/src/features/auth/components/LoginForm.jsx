@@ -1,28 +1,9 @@
-import React, { useState } from 'react'
-// import { useAuthStore } from '../store/useAuthStore';
-import BorderAnimatedContainer from '../../../shared/components/BorderAnimatedContainer';
-import { MessageCircleIcon, LockIcon, LoaderIcon, MailIcon } from 'lucide-react';
-import { Link } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../features/auth/authSlice';
+import React from 'react'
+import BorderAnimatedContainer from '../../../shared/components/BorderAnimatedContainer'
+import { LoaderIcon, LockIcon, MailIcon, MessageCircleIcon } from 'lucide-react'
+import { Link } from 'react-router'
 
-const LoginPage = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: ""
-  });
-  // const { login, isLogginIn } = useAuthStore();
-
-  const { user, loading } = useSelector(state => state.auth);
-  const dispatch = useDispatch();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(loginUser(formData));
-  };
-
-  if(user) return null;
-
+const LoginForm = ({ formData, loading, onChange, onSubmit }) => {
   return (
     <div className='w-full flex -items-center justify-center p-4 bg-slate-900'>
       <div className='relative w-full max-w-6xl md:h-[800px] h-[650px]'>
@@ -39,7 +20,7 @@ const LoginPage = () => {
                 </div>
 
                 {/* FORM  */}
-                <form onSubmit={handleSubmit} className='space-y-6'>
+                <form onSubmit={onSubmit} className='space-y-6'>
 
                   {/* EMAIL INPUT */}
                   <div>
@@ -48,7 +29,7 @@ const LoginPage = () => {
                       <MailIcon className='auth-input-icon' />
 
                       <input type="email" value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        onChange={(e) => onChange('email', e.target.value )}
                         className='input'
                         placeholder='johndoe@gmail.com'
                       />
@@ -62,7 +43,7 @@ const LoginPage = () => {
                       <LockIcon className='auth-input-icon' />
 
                       <input type="password" value={formData.password}
-                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                        onChange={(e) => onChange('password', e.target.value )}
                         className='input'
                         placeholder='Enter your password'
                       />
@@ -111,4 +92,4 @@ const LoginPage = () => {
   )
 }
 
-export default LoginPage
+export default LoginForm

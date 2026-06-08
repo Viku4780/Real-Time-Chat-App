@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, isPending, isRejected } from "@reduxjs/toolkit";
-import { axiosInstance } from "../../lib/axios";
+import { axiosInstance } from "../../config/axios";
 import toast from 'react-hot-toast';
-import { BASE_URL } from "../../config/api";
+import {BASE_URL} from '../../config/api'
 
 const initialState = {
     user: null,
