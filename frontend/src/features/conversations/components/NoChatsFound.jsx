@@ -3,7 +3,6 @@ import { setActiveTab } from "../chatSlice";
 import { useDispatch } from "react-redux";
 
 function NoChatsFound() {
-  // const { setActiveTab } = useChatStore();
   const dispatch = useDispatch()
 
   return (

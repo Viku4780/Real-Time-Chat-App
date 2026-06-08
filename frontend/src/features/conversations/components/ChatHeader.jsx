@@ -1,27 +1,8 @@
-import React, { useEffect } from 'react'
 import { XIcon } from 'lucide-react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setSelectedUser } from '../chatSlice'; 
+import useChatHeader from '../hooks/useChatHeader';
 
 const ChatHeader = () => {
-
-  const {selectedUser} = useSelector(state => state.chat);
-  const dispatch = useDispatch();
-  const onlineUsers = useSelector(state =>  state.auth.onlineUsers);
-  const isOnline = onlineUsers.includes(selectedUser._id);
-
-  // console.log("Running onlineUsers in chat Headers: ", onlineUsers);
-
-  useEffect(() => {
-    const handleEscKey = (e) => {
-      if (e.key === "Escape") dispatch(setSelectedUser(null));
-    }
-
-    window.addEventListener("keydown", handleEscKey);
-
-    // cleanup function
-    return () => window.removeEventListener("keydown", handleEscKey);
-  }, [setSelectedUser]);
+  const {isOnline, selectedUser, cancelChat} = useChatHeader();
 
   return (
     <div className='flex justify-between items-center bg-slate-800/50 border-b border-slate-700/50 max-h-[84px] px-6 flex-1'>
@@ -39,7 +20,7 @@ const ChatHeader = () => {
 
       </div>
 
-      <button onClick={() => dispatch(setSelectedUser(null))}>
+      <button onClick={cancelChat}>
         <XIcon className='w-5 h-5 text-slate-400 hover:text-slate-200 transition-colors cursor-pointer' />
       </button>
     </div>

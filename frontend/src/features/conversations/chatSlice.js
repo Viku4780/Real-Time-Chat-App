@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
-import { axiosInstance } from '../../lib/axios';
+import { axiosInstance } from '../../config/axios';
 
 const initialState = {
     allContacts: [],

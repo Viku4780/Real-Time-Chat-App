@@ -1,22 +1,10 @@
-import React, { useEffect } from 'react'
-// import { useChatStore } from '../store/useChatStore'
 import UsersLoadingSkeleton from '../../users/components/UsersLoadingSkeleton';
 import NoChatsFound from './NoChatsFound';
-// import { useAuthStore } from '../store/useAuthStore';
-import { useDispatch, useSelector } from 'react-redux';
-import { getMyChatPartners,setSelectedUser } from '../chatSlice'; 
+import {setSelectedUser } from '../chatSlice'; 
+import useChatList from '../hooks/useChatList';
 
 const ChatsList = () => {
-  // const { getMyChatPartners, chats, isUsersLoading, setSelectedUser } = useChatStore();
-  const {chats, isUsersLoading} = useSelector(state => state.chat);
-  const { onlineUsers } = useSelector(state => state.auth);
-  const dispatch = useDispatch();
-
-  // console.log("chats: ",chats);
-
-  useEffect(() => {
-   dispatch(getMyChatPartners());
-  }, [getMyChatPartners]);
+ const {isUsersLoading, chats, onlineUsers, dispatch} = useChatList();
 
   if (isUsersLoading) return <UsersLoadingSkeleton />;
   if (chats.length === 0) return <NoChatsFound />;
