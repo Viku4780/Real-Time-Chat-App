@@ -1,32 +1,22 @@
-import UsersLoadingSkeleton from "./UsersLoadingSkeleton";
-import {setSelectedUser} from "../../conversations/chatSlice";
-import useContactList from "../hooks/useContactList";
+import React from 'react'
 
-function ContactList() {
-  const {allContacts, isUsersLoading, onlineUsers, dispatch
-  } = useContactList();
-
-  if (isUsersLoading) return <UsersLoadingSkeleton />;
-
-  return (
-    <>
-      {allContacts.map((contact) => (
+const ContactList = ({contact, handleFetch, onlineUsers}) => {
+    return (
         <div
-          key={contact._id}
-          className="bg-cyan-500/10 p-4 rounded-lg cursor-pointer hover:bg-cyan-500/20 transition-colors"
-          onClick={() => dispatch(setSelectedUser(contact))}
+            key={contact._id}
+            className="bg-cyan-500/10 p-4 rounded-lg cursor-pointer hover:bg-cyan-500/20 transition-colors"
+            onClick={() => handleFetch(contact)}
         >
-          <div className="flex items-center gap-3">
-            <div className={`avatar ${onlineUsers?.includes(contact._id) ? "online" : "offline"}`}>
-              <div className="size-12 rounded-full">
-                <img src={contact.profilePic || "/avatar.png"} />
-              </div>
+            <div className="flex items-center gap-3">
+                <div className={`avatar ${onlineUsers?.includes(contact._id) ? "online" : "offline"}`}>
+                    <div className="size-12 rounded-full">
+                        <img src={contact.profilePic || "/avatar.png"} />
+                    </div>
+                </div>
+                <h4 className="text-slate-200 font-medium">{contact.fullName}</h4>
             </div>
-            <h4 className="text-slate-200 font-medium">{contact.fullName}</h4>
-          </div>
         </div>
-      ))}
-    </>
-  );
+    )
 }
-export default ContactList;
+
+export default ContactList
