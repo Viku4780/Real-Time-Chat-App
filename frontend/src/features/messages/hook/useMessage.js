@@ -40,7 +40,8 @@ const useMessage = () => {
             senderId: user._id,
             conversationId: activeConversation,
             text: text.trim(),
-            createdAt: dateGenerator()
+            createdAt: dateGenerator(),
+            updatedAt: dateGenerator()
         }))
 
         dispatch(sendMessage({

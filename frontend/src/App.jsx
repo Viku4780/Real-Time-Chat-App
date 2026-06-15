@@ -16,6 +16,7 @@ import { updateChatList } from './features/conversations/conversationSlice'
 const App = () => {
   const { user, loading } = useSelector(state => state.auth);
   const {selectedUser} = useSelector(state => state.user);
+  const {activeConversation} = useSelector(state => state.conversation);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,7 +31,7 @@ const App = () => {
         console.log('connection started');
         await socketProvider.connect();
         const socket = socketProvider.getSocket();
-        socketMiddleware(socket, dispatch, updateOnlineUser, subscribeToMessages, selectedUser, updateChatList)
+        socketMiddleware(socket, dispatch, updateOnlineUser, subscribeToMessages, selectedUser, updateChatList, activeConversation)
       }
     }
 

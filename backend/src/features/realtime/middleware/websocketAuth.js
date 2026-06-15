@@ -9,13 +9,16 @@ export const socketAuth = (handler) => {
             if (!token) throw new Error('No token provided');
 
             const decoded = jwt.verify(token, ENV.JWT_SECRET);
+            console.log('decoded: ', decoded);
             if (!decoded) throw new Error("Unauthorized - Invalid token");
 
             const user = await User.findById(decoded.userId);
             if (!user) throw new Error("User not found")
 
-            socket.user = user;
+            // socket.user = user;
             socket.userId = user._id.toString();
+
+            // console.log('socket.user', socket.userId);
 
             // run the main logic only if auth passes
             await handler(socket, req);

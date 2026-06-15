@@ -1,9 +1,10 @@
-const socketMiddleware = (socket, dispatch, updateOnlineUser, subscribeToMessages, selectedUser, updateChatList) => {
+import { updateMessageStatus } from "../../conversations/chatSlice";
+
+const socketMiddleware = (socket, dispatch, updateOnlineUser, subscribeToMessages, selectedUser, updateChatList, activeConversation) => {
 
     socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        // console.log(data);
-        console.log('onmessage event handler running')
+        // console.log('onmessage event handler running')
 
         if (data.type === 'getOnlineUsers') {
             dispatch(updateOnlineUser(data.payload));
@@ -18,6 +19,14 @@ const socketMiddleware = (socket, dispatch, updateOnlineUser, subscribeToMessage
         else if (data.type === 'update_chatLists') {
             console.log(data);
             dispatch(updateChatList(data.payload))
+        }else if(data.type === 'message_delivered'){
+            console.log(data);
+
+            if(data.payload.conversationId === activeConversation){
+                console.log('dispatching');
+                dispatch(updateMessageStatus(data.payload));
+            }
+            
         }
     }
 }

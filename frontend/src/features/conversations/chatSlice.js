@@ -57,9 +57,9 @@ const chatSlice = createSlice({
         },
 
         subscribeToMessages: (state, action) => {
-            console.log('running subscribe message', action.payload)
+            // console.log('running subscribe message', action.payload)
             const { isSoundEnabled } = state;
-            console.log(action.payload);
+            // console.log(action.payload);
             const { selectedUserId } = action.payload;
             if (!selectedUserId) return;
 
@@ -78,6 +78,15 @@ const chatSlice = createSlice({
                 notificationSound.play().catch((e) => console.log("audio play failed:", e));
             }
         },
+        updateMessageStatus: (state, action) => {
+            console.log('idx: ');
+            const idx = state.messages.findIndex(message => message._id === action.payload.messageId);
+            
+
+            if (idx !== -1) {
+                state.messages[idx].status = action.payload.status;
+            }
+        }
 
     },
     extraReducers: (builder) => {
@@ -113,5 +122,5 @@ const chatSlice = createSlice({
     }
 });
 
-export const { toggleSound, setActiveTab, setSelectedUser, subscribeToMessages, addingNewMessage } = chatSlice.actions;
+export const { toggleSound, setActiveTab, setSelectedUser, subscribeToMessages, addingNewMessage, updateMessageStatus } = chatSlice.actions;
 export default chatSlice.reducer;

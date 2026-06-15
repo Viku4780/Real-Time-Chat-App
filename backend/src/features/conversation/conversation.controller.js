@@ -28,7 +28,17 @@ export const createConversation = async (req, res) => {
 
 
         const newConversation = await Conversation.create({
-            participents: targetUserIds
+            participents: targetUserIds,
+            unReadCountPerUser: [
+                {
+                    user: initiaterId,
+                    count: 0
+                },
+                {
+                    user: otherParticipantId,
+                    count: 0
+                },
+            ]
         });
 
         res.status(201).json({ message: 'conversation created successfully', conversationId: newConversation._id });
@@ -63,6 +73,8 @@ export const getAllConversation = async (req, res) => {
 
         conversations.forEach(conv => {
             conv.lastMessagePerUser = conv.lastMessagePerUser.filter(item => item.user.toString() === loggedInUserId.toString());
+
+            conv.unReadCountPerUser = conv.unReadCountPerUser.filter(item => item.user.toString() === loggedInUserId.toString())[0];
 
             conv.participents = conv.participents.filter(item => item._id.toString() !== loggedInUserId.toString())
         })

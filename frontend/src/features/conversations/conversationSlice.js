@@ -51,20 +51,32 @@ const conversationSlice = createSlice({
             if (idx !== -1) {
                 const lastMessageObj = state.chatLists[idx].lastMessagePerUser[0];
 
+                if (state.chatLists[idx]._id === state.activeConversation) {
+                    state.chatLists[idx].unReadCountPerUser[0].count = 0
+                } else {
+                    state.chatLists[idx].unReadCountPerUser[0] = action.payload.unReadMessage;
+                }
+
+                state.chatLists[idx].updatedAt = action.payload.updatedAt;
+
                 const requiredObj = lastMessageObj.message;
-                // if (action.payload.temporaryId) {
-                //     requiredObj._id = action.payload._id;
-                // } else {
-                // }
                 requiredObj._id = action.payload._id;
 
                 requiredObj.senderId = action.payload.senderId;
                 requiredObj.text = action.payload.text;
                 requiredObj.createdAt = action.payload.createdAt;
 
-                state.chatLists.sort((a, b) => dateInNumber(b.lastMessagePerUser[0].message.createdAt) - dateInNumber(a.lastMessagePerUser[0].message.createdAt));
+                state.chatLists.sort((a, b) => dateInNumber(b.updatedAt) - dateInNumber(a.updatedAt));
             }
 
+        },
+        updateUnReadMessageCountToZero: (state) => {
+             const idx = state.chatLists.findIndex(chat => chat._id === state.activeConversation);
+
+            if (idx !== -1) {
+                const requiredObj = state.chatLists[idx];
+                requiredObj.unReadCountPerUser[0].count = 0
+            }
         }
     },
     extraReducers: (builder) => {
@@ -96,6 +108,6 @@ const conversationSlice = createSlice({
     }
 })
 
-export const { deleteConversation, updateChatList } = conversationSlice.actions;
+export const { deleteConversation, updateChatList, updateUnReadMessageCountToZero } = conversationSlice.actions;
 
 export default conversationSlice.reducer;

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getMessagesByConversationId } from '../chatSlice';
+import { updateUnReadMessageCountToZero } from '../conversationSlice';
 
 const useChatContainer = () => {
     const { isMessagesLoading, messages, messageSendingLoading } = useSelector(state => state.chat);
@@ -14,6 +15,7 @@ const useChatContainer = () => {
     useEffect(() => {
         if (activeConversation) {
             dispatch(getMessagesByConversationId(activeConversation));
+            dispatch(updateUnReadMessageCountToZero());
         }
     }, [activeConversation, getMessagesByConversationId]);
 
