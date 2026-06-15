@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { sendWelcomeEmail } from "../../infrastructure/email/emailHandlers.js";
 import cloudinary from "../../infrastructure/storage/cloudinary.js";
 import { generateToken } from "../../lib/utils.js";
@@ -91,6 +92,8 @@ export const login = async(req,res) => {
         email: user.email,
         profilePic: user.profilePic,
     });
+
+    console.log('final check point in login auth')
    } catch (error) {
     console.error("Error in login controller:", error);
     res.status(500).json({ message: "Internal server error"});
