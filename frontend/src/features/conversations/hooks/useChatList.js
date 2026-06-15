@@ -1,17 +1,25 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { getMyChatPartners } from '../chatSlice';
+import { createConversation, findAllConversation } from '../conversationSlice';
+import { setSelectedUser } from '../../users/userSlice';
 
 const useChatList = () => {
-    const { chats, isUsersLoading } = useSelector(state => state.chat);
+    const { chatLists, isChatListLoading } = useSelector(state => state.conversation);
     const { onlineUsers } = useSelector(state => state.auth);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getMyChatPartners());
-    }, [getMyChatPartners]);
+        dispatch(findAllConversation());
+    }, [findAllConversation]);
 
-    return {chats, isUsersLoading, onlineUsers, dispatch}
+     const handleFetch = (obj) => {
+        dispatch(setSelectedUser(obj.participents[0]));
+        dispatch(createConversation({
+          userId: obj.participents[0]._id
+        }));
+      }
+
+    return {chatLists, isChatListLoading, onlineUsers, dispatch, handleFetch}
 }
 
 export default useChatList
