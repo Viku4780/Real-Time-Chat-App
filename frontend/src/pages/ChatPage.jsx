@@ -1,15 +1,16 @@
 import BorderAnimatedContainer from '../shared/components/BorderAnimatedContainer';
 import ProfileHeader from '../features/users/components/ProfileHeader';
 import ActiveTabSwitch from '../features/conversations/components/ActiveTabSwitch';
-import ChatsList from '../features/conversations/components/ChatsList';
-import ContactList from '../features/users/components/ContactList';
+import ChatsLists from '../features/conversations/components/ChatsListsContainer';
+import ContactLists from '../features/users/components/ContactListsContainer';
 import ChatContainer from '../features/conversations/components/ChatContainer';
 import NoConversationPlaceholder from '../features/conversations/components/NoConversationPlaceholder';
 import { useSelector } from 'react-redux';
 
 
 const ChatPage = () => {
- const {activeTab, selectedUser} = useSelector(state => state.chat);
+ const {activeTab} = useSelector(state => state.chat);
+ const {selectedUser} = useSelector(state => state.user);
 
 //  console.log("selectedUser: ", selectedUser);
 
@@ -22,7 +23,7 @@ const ChatPage = () => {
           <ActiveTabSwitch />
 
           <div className='flex-1 overflow-y-auto p-4 space-y-2'>
-            {activeTab === 'chats' ? <ChatsList /> : <ContactList />}
+            {activeTab === 'chats' ? <ChatsLists /> : <ContactLists />}
           </div>
         </div>
 
