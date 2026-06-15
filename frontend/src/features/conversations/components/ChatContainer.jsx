@@ -7,25 +7,42 @@ import useChatContainer from "../hooks/useChatContainer";
 
 
 function ChatContainer() {
-  const {user, messageEndRef, messages, isMessagesLoading, selectedUser} = useChatContainer();
+  const { user, containerRef, messages, isMessagesLoading, selectedUser } = useChatContainer();
 
   return (
     <>
       <ChatHeader />
-      <div className="flex-1 px-6 overflow-y-auto py-8">
-        {messages.length > 0 && !isMessagesLoading ? (
-          <div className="max-w-3xl mx-auto space-y-6">
-            {messages.map((msg) => (
-              <Message msg={msg} user={user} />
-            ))}
-            {/* 👇 scroll target */}
-            <div ref={messageEndRef} />
-          </div>
-        ) : isMessagesLoading ? (
-          <MessagesLoadingSkeleton />
-        ) : (
-          <NoChatHistoryPlaceholder name={selectedUser.fullName} />
-        )}
+      <div ref={containerRef} className="flex-1 px-6 overflow-y-auto py-8">
+        {
+          messages?.length > 0 && !isMessagesLoading ?
+            (
+              <div className="max-w-3xl mx-auto space-y-6">
+                {
+                  messages.map((msg) => (
+                     <Message key={msg?._id} msg={msg} user={user} />
+                  ))
+                }
+
+                {/* 👇 scroll target */}
+                {/* <div  className={messageSendingLoading ? `chat chat-end animate-pulse` : ''} >
+                  {
+                    messageSendingLoading
+                    &&
+                    <div className={`chat-bubble bg-slate-800 text-white w-32`} />
+                  }
+                </div> */}
+              </div>
+            )
+            :
+            isMessagesLoading ?
+              (
+                <MessagesLoadingSkeleton />
+              )
+              :
+              (
+                <NoChatHistoryPlaceholder name={selectedUser.fullName} />
+              )
+        }
       </div>
 
       <MessageInput />
