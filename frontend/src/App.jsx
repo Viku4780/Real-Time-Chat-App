@@ -1,4 +1,3 @@
-import React, {  useEffect } from 'react'
 import { Navigate, Route, Routes } from 'react-router'
 import ChatPage from './pages/ChatPage'
 import LoginPage from './pages/LoginPage'
@@ -6,17 +5,37 @@ import SignUpPage from './pages/SignUpPage'
 import PageLoader from '../src/shared/components/PageLoader'
 import { Toaster } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
-import { checkUserAuth } from './features/auth/authSlice'
+import { useEffect } from 'react'
+import { checkUserAuth, updateOnlineUser } from './features/auth/authSlice'
+import socketProvider from './features/realtime/service/socket.service'
+import socketMiddleware from './features/realtime/middleware/socketMiddleware'
+import { subscribeToMessages } from './features/conversations/chatSlice'
+import { updateChatList } from './features/conversations/conversationSlice'
 
 
 const App = () => {
   const { user, loading } = useSelector(state => state.auth);
+  const {selectedUser} = useSelector(state => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(checkUserAuth());
   }, [dispatch]);
 
+  const userId = user?._id;
+
+  useEffect(() => {
+    async function settingWebsocket() {
+      if (userId) {
+        console.log('connection started');
+        await socketProvider.connect();
+        const socket = socketProvider.getSocket();
+        socketMiddleware(socket, dispatch, updateOnlineUser, subscribeToMessages, selectedUser, updateChatList)
+      }
+    }
+
+    settingWebsocket()
+  }, [userId, selectedUser]);
 
   if (loading) return <PageLoader />
 
