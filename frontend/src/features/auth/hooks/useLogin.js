@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, {  useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../authSlice';
 
@@ -8,7 +8,7 @@ const useLogin = () => {
         password: ""
     });
 
-    const { user, loading } = useSelector(state => state.auth);
+    const {user, loading } = useSelector(state => state.auth);
     const dispatch = useDispatch();
 
     const handleSubmit = (e) => {
@@ -22,7 +22,7 @@ const useLogin = () => {
 
     if (user) return null;
 
-    return { loading, user, handleInputChange, handleSubmit, formData }
+    return { loading,  handleInputChange, handleSubmit, formData }
 }
 
 export default useLogin
