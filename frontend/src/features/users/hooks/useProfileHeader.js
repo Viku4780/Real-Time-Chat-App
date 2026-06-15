@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser, updateUserProfile } from '../../auth/authSlice';
 import { toggleSound } from '../../conversations/chatSlice';
+import socketProvider from '../../realtime/service/socket.service';
 
 const mouseClickSound = new Audio("/sound/mouse-click.mp3");
 
@@ -25,9 +26,11 @@ const useProfileHeader = () => {
             dispatch(updateUserProfile({ profilePic: base64Image }));
         }
     };
+    // console.log(socketProvider)
 
     const handleLogout = () => {
         dispatch(logoutUser());
+        socketProvider.disconnect();
     };
 
     const handleToggleSound = () => {
