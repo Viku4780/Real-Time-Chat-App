@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
 
 const messageSchema = new mongoose.Schema({
+    conversationId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Conversation',
+        required: true
+    },
     senderId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required: true,
-    },
-    receiverId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
         required: true,
     },
     text: {
@@ -19,7 +19,32 @@ const messageSchema = new mongoose.Schema({
     image: {
         type: String,
     },
-},{timestamps: true});
+    video: {
+        type: String
+    },
+    documentFile: {
+        type: String
+    },
+    status: {
+        type: String,
+        enum: ["pending", "sent", "delivered", "seen"],
+        default: "pending"
+    },
+    messageDeletedFor: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ], // this is perfect for if someone deleted the message they are not going to see it
+    isActive: {
+        type: Boolean,
+        default: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
+});
 
 const Message = mongoose.model("Message", messageSchema);
 
