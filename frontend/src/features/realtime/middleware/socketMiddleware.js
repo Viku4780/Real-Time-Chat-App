@@ -1,28 +1,25 @@
-import SocketService from "../service/socketClass";
+const socketMiddleware = (socket, dispatch, updateOnlineUser, subscribeToMessages, selectedUser, updateChatList) => {
 
-export const socketMiddleware =
-    (store) =>
-        (next) =>
-            (action) => {
+    socket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        // console.log(data);
+        console.log('onmessage event handler running')
 
-                if (
-                    action.type === "socket/connect"
-                ) {
-                    const socketService = new SocketService('ws://localhost:3000');
-                    const socket = socketService.connect();
-                }
+        if (data.type === 'getOnlineUsers') {
+            dispatch(updateOnlineUser(data.payload));
+        }
+        else if (data.type === 'newMessage') {
+            console.log('newMessage arrived');
+            dispatch(subscribeToMessages({
+                data: data.payload,
+                selectedUserId: selectedUser?._id
+            }))
+        }
+        else if (data.type === 'update_chatLists') {
+            console.log(data);
+            dispatch(updateChatList(data.payload))
+        }
+    }
+}
 
-                if (
-                    action.type === "socket/sendMessage"
-                ) {
-                    const socket = getSocket()
-
-                    socket?.send(
-                        JSON.stringify(
-                            action.payload
-                        )
-                    )
-                }
-
-                return next(action)
-            }
+export default socketMiddleware;
