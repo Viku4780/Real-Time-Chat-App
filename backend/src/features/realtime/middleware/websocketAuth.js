@@ -9,7 +9,7 @@ export const socketAuth = (handler) => {
             if (!token) throw new Error('No token provided');
 
             const decoded = jwt.verify(token, ENV.JWT_SECRET);
-            console.log('decoded: ', decoded);
+            // console.log('decoded: ', decoded);
             if (!decoded) throw new Error("Unauthorized - Invalid token");
 
             const user = await User.findById(decoded.userId);

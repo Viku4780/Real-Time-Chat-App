@@ -28,7 +28,7 @@ wss.on("connection", socketAuth(async (socket, req) => {
 
     queueMessage.forEach(async(msg) => {
       const socket = getSocket(msg.senderId.toString());
-      console.log('socket', socket);
+      console.log('socket');
       await resolveMessageDelivery(msg ,socket);
     })
   }
