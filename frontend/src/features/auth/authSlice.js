@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, isPending, isRejected } from "@reduxjs/t
 import { axiosInstance } from "../../config/axios";
 import toast from 'react-hot-toast';
 import {BASE_URL} from '../../config/api'
+import { destroyGlobalStore } from "../../store/action";
 
 const initialState = {
     user: null,
@@ -48,16 +49,17 @@ export const loginUser = createAsyncThunk("auth/loginUser", async (data, thunkAP
     }
 });
 
-export const logoutUser = createAsyncThunk("auth/logoutUser", async (__, thunkAPI) => {
+export const logoutUser = createAsyncThunk("auth/logoutUser", async (__, { dispatch, rejectWithValue }) => {
     try {
         const res = await axiosInstance.post("/auth/logout");
         toast.success("Logged out successfully");
+
+        dispatch(destroyGlobalStore());
 
         return res.data;
     } catch (error) {
         const message = error.response?.data?.message || "Logout failed";
         toast.error(message);
-        const {rejectWithValue} = thunkAPI;
         return rejectWithValue(message);
     }
 });
@@ -99,11 +101,6 @@ const authSlice = createSlice({
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.loading = false;
                 state.user = action.payload;
-            })
-            .addCase(logoutUser.fulfilled, (state) => {
-                state.loading = false;
-                state.user = null;
-
             })
             .addCase(updateUserProfile.fulfilled, (state, action) => {
                 state.loading = false;
