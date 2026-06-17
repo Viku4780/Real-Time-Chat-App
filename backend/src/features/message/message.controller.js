@@ -2,7 +2,7 @@ import cloudinary from "../../infrastructure/storage/cloudinary.js";
 import { wss } from "../realtime/websocket.js";
 import Message from "../message/message.model.js";
 import User from "../auth/auth.model.js";
-import { getSocket } from "../realtime/utils/websocket.utils.js";
+import { getSocket, resolveMessageSeen } from "../realtime/utils/websocket.utils.js";
 import { Conversation } from "../conversation/conversation.model.js";
 import { messageQueue } from "../../store/messageQueue.js";
 
@@ -31,6 +31,18 @@ export const getMessagesByConversationId = async (req, res) => {
         }
 
         await findConversation.save();
+
+        if (messageQueue.get(myId.toString())) {
+            const queueMessage = messageQueue.get(myId.toString());
+
+            console.log('running messageQueue');
+
+            queueMessage.forEach(async (msg) => {
+                const socket = getSocket(msg.senderId.toString());
+                console.log('socket');
+                await resolveMessageSeen(msg, socket);
+            })
+        }
 
         res.status(200).json(messages);
     } catch (error) {
@@ -129,7 +141,7 @@ export const sendMessage = async (req, res) => {
         if (receiverSocket) {
             newMessage.status = 'delivered';
             await newMessage.save();
-            
+
             receiverSocket.send(JSON.stringify({
                 type: 'newMessage',
                 payload: {
@@ -155,21 +167,24 @@ export const sendMessage = async (req, res) => {
                     updatedAt: checkConversation.updatedAt
                 }
             }))
+
         } else {
             if (messageQueue.get(receiverId)) {
-                messageQueue.get(receiverId).push({
+                let queueMessage = messageQueue.get(receiverId);
+
+                queueMessage.push({
                     _id: newMessage._id,
                     conversationId: newMessage.conversationId,
-                    senderId: newMessage.senderId,
                     status: newMessage.status,
+                    senderId: newMessage.senderId
                 })
-
-            } else {
+            }
+            else {
                 messageQueue.set(receiverId, [{
                     _id: newMessage._id,
                     conversationId: newMessage.conversationId,
-                    senderId: newMessage.senderId,
                     status: newMessage.status,
+                    senderId: newMessage.senderId
                 }])
             }
         }

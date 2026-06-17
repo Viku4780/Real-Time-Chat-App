@@ -6,11 +6,10 @@ import PageLoader from '../src/shared/components/PageLoader'
 import { Toaster } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
-import { checkUserAuth, updateOnlineUser } from './features/auth/authSlice'
+import { checkUserAuth } from './features/auth/authSlice'
 import socketProvider from './features/realtime/service/socket.service'
 import socketMiddleware from './features/realtime/middleware/socketMiddleware'
-import { subscribeToMessages } from './features/conversations/chatSlice'
-import { updateChatList } from './features/conversations/conversationSlice'
+
 
 
 const App = () => {
@@ -31,12 +30,15 @@ const App = () => {
         console.log('connection started');
         await socketProvider.connect();
         const socket = socketProvider.getSocket();
-        socketMiddleware(socket, dispatch, updateOnlineUser, subscribeToMessages, selectedUser, updateChatList, activeConversation)
+
+        console.log('activeConversation: ', activeConversation);
+
+        socketMiddleware(socket, dispatch, selectedUser, activeConversation)
       }
     }
 
     settingWebsocket()
-  }, [userId, selectedUser]);
+  }, [userId, activeConversation]);
 
   if (loading) return <PageLoader />
 

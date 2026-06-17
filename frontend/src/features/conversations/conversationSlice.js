@@ -7,7 +7,7 @@ const initialState = {
     chatLists: [],
     isChatListLoading: false,
     chatListError: false,
-    activeConversation: null,
+    activeConversation: null, // this is causing more issue i mean in message delivery
     isActiveConversation: false,
     activeConversationError: false,
 };
@@ -18,8 +18,6 @@ export const createConversation = createAsyncThunk('conversation/createConversat
         const res = await axiosInstance.post('/conversation/create', userIdData);
 
         return res.data;
-        // console.log(data);
-        // return res.data;
     } catch (error) {
         toast.error(error.response.data.message);
         rejectWithValue(error.response.data?.message);
