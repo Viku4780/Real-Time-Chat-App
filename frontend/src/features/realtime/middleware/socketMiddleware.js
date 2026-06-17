@@ -1,7 +1,10 @@
 import { updateMessageStatus } from "../../conversations/chatSlice";
+import { updateOnlineUser } from "../../auth/authSlice";
+import { subscribeToMessages } from "../../conversations/chatSlice";
+import { updateChatList } from "../../conversations/conversationSlice";
 
-const socketMiddleware = (socket, dispatch, updateOnlineUser, subscribeToMessages, selectedUser, updateChatList, activeConversation) => {
 
+const socketMiddleware = (socket, dispatch, selectedUser,  activeConversation) => {
     socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
         // console.log('onmessage event handler running')
@@ -19,16 +22,23 @@ const socketMiddleware = (socket, dispatch, updateOnlineUser, subscribeToMessage
         else if (data.type === 'update_chatLists') {
             console.log(data);
             dispatch(updateChatList(data.payload))
-        }else if(data.type === 'message_delivered'){
+
+        }
+        else if (data.type === 'message_delivered') {
+
             console.log(data);
 
-            if(data.payload.conversationId === activeConversation){
+            console.log(data.payload.conversationId === activeConversation, `conversationId: ${data.payload.conversationId}`, `activeConversation: ${activeConversation}`);
+
+            if (data.payload.conversationId === activeConversation) {
                 console.log('dispatching');
                 dispatch(updateMessageStatus(data.payload));
             }
-            
+
         }
     }
+
 }
 
 export default socketMiddleware;
+

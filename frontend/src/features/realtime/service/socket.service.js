@@ -22,6 +22,7 @@ class SocketService {
 
     async connect() {
         if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+            console.log('socket already existed');
             return this.socket;
         }
 

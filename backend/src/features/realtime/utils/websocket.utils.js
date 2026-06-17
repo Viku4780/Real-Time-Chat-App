@@ -10,7 +10,7 @@ export function broadCastOnlineUsers(map) {
     const onlineIds = [...map.keys()];
 
     console.log('onlineIds: ', onlineIds);
-    
+
     for (let client of map.values()) {
         client.send(JSON.stringify({ type: "getOnlineUsers", payload: onlineIds }));
     }
@@ -31,8 +31,35 @@ export async function resolveMessageDelivery(msg, socket) {
 
             console.log('send delivered event')
         }
-        const message = await Message.findById({ _id: msg._id });
+        const message = await Message.findById(msg._id);
         message.status = 'delivered';
+
+        await message.save();
+
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
+
+export async function resolveMessageSeen(msg, socket) {
+    try {
+        if (socket) {
+            socket.send(JSON.stringify({
+                type: 'message_seen',
+                payload: {
+                    conversationId: msg.conversationId,
+                    messageId: msg._id,
+                    status: 'delivered'
+                }
+            }))
+
+            console.log('send delivered event')
+        }
+        const message = await Message.findById(msg._id);
+        message.status = 'seen';
+
+        await message.save();
 
     } catch (error) {
         console.error(error.message);

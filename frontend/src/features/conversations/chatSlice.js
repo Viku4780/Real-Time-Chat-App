@@ -84,6 +84,7 @@ const chatSlice = createSlice({
             
 
             if (idx !== -1) {
+                console.log('idx: ', idx);
                 state.messages[idx].status = action.payload.status;
             }
         }
