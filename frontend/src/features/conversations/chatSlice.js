@@ -31,7 +31,6 @@ export const sendMessage = createAsyncThunk("chat/sendMessage", async (messageDa
     try {
         const res = await axiosInstance.post(`/messages/send`, messageData);
         // console.log(res.data);
-        // const message = await db.messages.add(messageData);
         return res.data;
     } catch (error) {
         toast.error(error.response?.data?.message || "Something went wrong");
