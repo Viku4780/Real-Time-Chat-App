@@ -21,33 +21,33 @@ const conversationSchema = new mongoose.Schema({
             }
         }, { _id: false })
     ],
-    unReadCountPerUser: [
-        new mongoose.Schema({
-            user: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'User'
-            },
-            count: {
-                type: Number,
-                default: 0
-            }
-        }, { _id: false })
-    ],
+    // unReadCountPerUser: [
+    //     new mongoose.Schema({
+    //         user: {
+    //             type: mongoose.Schema.Types.ObjectId,
+    //             ref: 'User'
+    //         },
+    //         count: {
+    //             type: Number,
+    //             default: 0
+    //         }
+    //     }, { _id: false })
+    // ],  // this structure also getting un-suitable for client side database architecture
     typeOfConversation: {
         type: String,
         enum: ['single', 'group'],
         default: 'single'
     },
-    removedConversationForParticipants: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
-        }
-    ],
-    isConversationActive: {
-        type: Boolean,
-        default: false
-    }
+    // removedConversationForParticipants: [
+    //     {
+    //         type: mongoose.Schema.Types.ObjectId,
+    //         ref: "User"
+    //     }
+    // ],
+    // isConversationActive: {
+    //     type: Boolean,
+    //     default: false
+    // }
 }, { timestamps: true });
 
 

@@ -25,6 +25,7 @@ const useMessage = () => {
         if (isSoundEnabled) playRandomKeyStrokeSound();
         
         const uniqueId = crypto.randomUUID();
+
         dispatch(addingNewMessage({
             _id: uniqueId,
             senderId: user._id,
@@ -51,8 +52,10 @@ const useMessage = () => {
             conversationId: activeConversation,
             receiverId: selectedUser._id
         }));
+
         setText("");
         setImagePreview("");
+        
         if (fileInputRef.current) fileInputRef.current.value = "";
     };
 
