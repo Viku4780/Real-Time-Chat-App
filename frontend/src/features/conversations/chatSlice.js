@@ -31,9 +31,11 @@ export const sendMessage = createAsyncThunk("chat/sendMessage", async (msgId, th
     // 1. Call getState to retrieve the full state object and thunkAPI can only be used in createAsyncThunk and reducers should be pure function
     // const state = thunkAPI.getState();
     try {
-        // const res = await axiosInstance.post(`/messages/send`, messageData);
         const res = await getMessageById(msgId);
-        // console.log(res.data);
+
+        await axiosInstance.post(`/messages/send`, res);
+        console.log(res);
+        
         return res;
     } catch (error) {
         toast.error(error.response?.data?.message || "Something went wrong");

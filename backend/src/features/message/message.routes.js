@@ -1,5 +1,5 @@
 import express from 'express';
-import {  getChatPartners, getMessagesByConversationId, sendMessage } from '../message/message.controller.js';
+import {  getChatPartners, sendMessage } from '../message/message.controller.js';
 import { protectRoute } from '../auth/auth.middleware.js';
 import { arcjetProtection } from '../../infrastructure/security/arcjet.middleware.js';
 
@@ -10,7 +10,7 @@ const router = express.Router();
 router.use(arcjetProtection,protectRoute);
 
 router.get("/chats", getChatPartners);
-router.get("/:id", getMessagesByConversationId);
+// router.get("/:id", getMessagesByConversationId);
 
 router.post("/send", sendMessage);
 
