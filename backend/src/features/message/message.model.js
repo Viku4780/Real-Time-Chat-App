@@ -30,16 +30,16 @@ const messageSchema = new mongoose.Schema({
         enum: ["pending", "sent", "delivered", "seen", "failed"],
         default: "pending"
     },
-    // messageDeletedFor: [
-    //     {
-    //         type: mongoose.Schema.Types.ObjectId,
-    //         ref: 'User'
-    //     }
-    // ], // this is perfect for if someone deleted the message they are not going to see it
-    // isActive: {
-    //     type: Boolean,
-    //     default: true
-    // },    // this becomes un-neccessary when using the client side database to store the message
+    messageDeletedFor: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ], // this is perfect for if someone deleted the message they are not going to see it
+    isActive: {
+        type: Boolean,
+        default: true
+    },    // this becomes un-neccessary when using the client side database to store the message
     createdAt: {
         type: Date,
         default: Date.now

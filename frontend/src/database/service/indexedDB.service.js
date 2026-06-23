@@ -5,7 +5,7 @@ const createMessage = async(msgData) => {
   return msgId;
 }
 
-const getMessage = async(conversationId) => {
+const getAllMessagesByConversationId = async(conversationId) => {
   const messages =  await db.messages
                           .where("conversationId")
                           .equals(conversationId)
@@ -15,4 +15,30 @@ const getMessage = async(conversationId) => {
   return messages;
 }
 
-export {createMessage, getMessage};
+const getMessageById = async(msgId) => {
+  const message = await db.messages
+                          .where("_id")
+                          .equals(msgId);
+  
+  return message;
+}
+
+const updateMessage = async(msgId) => {
+  
+}
+
+
+const deleteMessage = async(msgId) => {
+
+}
+
+const deleteConversation = async(conversationId) => {
+
+}
+
+const updateUnreadCount = async(conversationId) => {
+
+}
+
+
+export {createMessage, getAllMessagesByConversationId, getMessageById, updateMessage, deleteMessage, deleteConversation, updateUnreadCount};

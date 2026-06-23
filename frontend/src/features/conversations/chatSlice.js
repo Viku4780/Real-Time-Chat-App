@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
 import { axiosInstance } from '../../config/axios';
 import { db } from '../../database/config/indexedDB';
+import { getAllMessagesByConversationId, getMessageById } from '../../database/service/indexedDB.service';
 
 const initialState = {
     messages: [],
@@ -15,9 +16,10 @@ const initialState = {
 export const getMessagesByConversationId = createAsyncThunk("chat/getMessagesByUserId", async (conversationId, thunkAPI) => {
 
     try {
-        const res = await axiosInstance.get(`/messages/${conversationId}`);
+        // const res = await axiosInstance.get(`/messages/${conversationId}`);
+        const res = await getAllMessagesByConversationId(conversationId)
         // set({ messages: res.data });
-        return res.data;
+        return res;
     } catch (error) {
         toast.error(error.response?.data?.message || "Something went wrong");
         const rejectWithValue = thunkAPI.rejectWithValue;
@@ -25,13 +27,14 @@ export const getMessagesByConversationId = createAsyncThunk("chat/getMessagesByU
     }
 });
 
-export const sendMessage = createAsyncThunk("chat/sendMessage", async (messageData, thunkAPI) => {
+export const sendMessage = createAsyncThunk("chat/sendMessage", async (msgId, thunkAPI) => {
     // 1. Call getState to retrieve the full state object and thunkAPI can only be used in createAsyncThunk and reducers should be pure function
     // const state = thunkAPI.getState();
     try {
-        const res = await axiosInstance.post(`/messages/send`, messageData);
+        // const res = await axiosInstance.post(`/messages/send`, messageData);
+        const res = await getMessageById(msgId);
         // console.log(res.data);
-        return res.data;
+        return res;
     } catch (error) {
         toast.error(error.response?.data?.message || "Something went wrong");
         const { rejectWithValue } = thunkAPI;
@@ -109,13 +112,15 @@ const chatSlice = createSlice({
             .addCase(sendMessage.fulfilled, (state, action) => {
                 state.messageSendingLoading = false;
                 // console.log(action.payload);
-                const { data, temporaryId } = action.payload;
+                // const { data, temporaryId } = action.payload;
 
-                const index = state.messages.findIndex(message => message._id === temporaryId);
-                if (index !== -1) {
-                    state.messages[index]._id = data._id;
-                    state.messages[index].status = data.status;
-                }
+                // const index = state.messages.findIndex(message => message._id === temporaryId);
+                // if (index !== -1) {
+                //     state.messages[index]._id = data._id;
+                //     state.messages[index].status = data.status;
+                // }
+
+                state.messages.push(action.payload);
 
             })
             .addCase(sendMessage.rejected, (state) => {

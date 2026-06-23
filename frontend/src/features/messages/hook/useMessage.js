@@ -1,10 +1,11 @@
 import React, { useRef, useState } from 'react'
 import useKeyboardSound from './useKeyboardSound'
 import { useDispatch, useSelector } from 'react-redux';
-import { sendMessage,addingNewMessage } from '../../conversations/chatSlice';
+import { sendMessage, addingNewMessage } from '../../conversations/chatSlice';
 import toast from 'react-hot-toast';
 import { dateGenerator } from '../../../utils/dateGenerator';
 import { updateChatList } from '../../conversations/conversationSlice';
+import { createMessage } from '../../../database/service/indexedDB.service';
 
 const useMessage = () => {
     const { playRandomKeyStrokeSound } = useKeyboardSound();
@@ -14,17 +15,26 @@ const useMessage = () => {
     const fileInputRef = useRef(null);
 
     const { isSoundEnabled } = useSelector(state => state.chat);
-    const {activeConversation} = useSelector(state => state.conversation);
-    const {selectedUser} = useSelector(state => state.user);
-    const {user} = useSelector(state => state.auth);
+    const { activeConversation } = useSelector(state => state.conversation);
+    const { selectedUser } = useSelector(state => state.user);
+    const { user } = useSelector(state => state.auth);
     const dispatch = useDispatch();
-    
-    const handleSendMessage = (e) => {
+
+    const handleSendMessage = async(e) => {
         e.preventDefault();
         if (!text.trim() && !imagePreview) return;
         if (isSoundEnabled) playRandomKeyStrokeSound();
-        
+
         const uniqueId = crypto.randomUUID();
+
+       const id = await createMessage({
+            senderId: user._id,
+            conversationId: activeConversation,
+            text: text.trim(),
+            image: imagePreview,
+            status: "pending",
+            createdAt: dateGenerator()
+        })
 
         dispatch(addingNewMessage({
             _id: uniqueId,
@@ -45,17 +55,19 @@ const useMessage = () => {
             updatedAt: dateGenerator()
         }))
 
-        dispatch(sendMessage({
-            text: text.trim(),
-            temporaryId: uniqueId,
-            image: imagePreview,
-            conversationId: activeConversation,
-            receiverId: selectedUser._id
-        }));
+        // dispatch(sendMessage({
+        //     text: text.trim(),
+        //     temporaryId: uniqueId,
+        //     image: imagePreview,
+        //     conversationId: activeConversation,
+        //     receiverId: selectedUser._id
+        // }));
+
+        dispatch(sendMessage(id));
 
         setText("");
         setImagePreview("");
-        
+
         if (fileInputRef.current) fileInputRef.current.value = "";
     };
 
@@ -76,7 +88,7 @@ const useMessage = () => {
         if (fileInputRef.current) fileInputRef.current.value = "";
     };
 
-    return {imagePreview, removeImage,handleSendMessage, setText,fileInputRef,isSoundEnabled, playRandomKeyStrokeSound, handleImageChange, text}
+    return { imagePreview, removeImage, handleSendMessage, setText, fileInputRef, isSoundEnabled, playRandomKeyStrokeSound, handleImageChange, text }
 }
 
 export default useMessage
