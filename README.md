@@ -12,6 +12,8 @@ A full-stack real-time chat application that enables users to communicate instan
 - 🟢 Online / Offline user status
 - 📱 Responsive design (mobile + desktop)
 - 🔄 Instant message updates without refresh
+-  message delivery status
+-  un-read message count and last message
 
 ---
 
